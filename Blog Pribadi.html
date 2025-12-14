@@ -1,0 +1,1082 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Website Pribadi - Bayu Dharma Prayoga | Teknik Informatika</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+   
+    <style>
+        /* ==================================== */
+        /* 1. RESET & VARIABEL */
+        /* ==================================== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        /* Variabel CSS untuk tema */
+        :root {
+            --bg-primary: #e0f7fa; /* Light Mint/Cyan */
+            --bg-secondary: #f0f4f8; /* Light Off-White */
+            --text-color: #2c3e50; /* Dark Blue/Charcoal */
+            --container-bg: rgba(255, 255, 255, 0.2); /* Lebih transparan */
+            --accent-color: #00bcd4; /* Accent: Teal/Cyan Terang */
+            --accent-hover: #0097a7; 
+            --shadow: 0 15px 40px rgba(0,0,0,0.15); /* Shadow yang lebih dalam */
+            --glass-blur: blur(20px); /* Blur yang lebih kuat untuk efek glassmorphism */
+            
+            /* Variabel Ikon Unicode Baru (jika tidak menggunakan Font Awesome) */
+            --icon-name: '👤'; 
+            --icon-grad: '🎓';
+            --icon-uni: '🏫';
+            --icon-age: '🎂';
+            --icon-gender: '🚻';
+            --icon-hobby: '🏸';
+            --icon-theme: '💡'; 
+        }
+        
+        /* Tema gelap */
+        body.dark-mode {
+            --bg-primary: #1a1a2e; /* Dark Purple/Navy */
+            --bg-secondary: #2c394b;
+            --text-color: #ecf0f1; /* Light Gray */
+            --container-bg: rgba(44, 57, 75, 0.4); /* Darker transparent background */
+            --accent-color: #00e5ff; /* Accent: Cyan Terang/Electric */
+            --accent-hover: #00b8d4;
+            --shadow: 0 15px 40px rgba(0,0,0,0.4);
+            --icon-theme: '🌙';
+        }
+        
+        /* ==================================== */
+        /* 2. BODY & CANVAS */
+        /* ==================================== */
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
+            background-attachment: fixed; 
+            color: var(--text-color);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            transition: background 0.5s ease, color 0.5s ease;
+            overflow-x: hidden; 
+        }
+        
+        #particles-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1; 
+            pointer-events: none;
+        }
+
+        /* ==================================== */
+        /* 3. HEADER & TOGGLE */
+        /* ==================================== */
+        header {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+        }
+        .theme-toggle {
+            background: var(--accent-color);
+            color: var(--text-color); /* Warna teks disesuaikan dengan latar belakang */
+            border: none;
+            padding: 10px 18px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 1em;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: var(--shadow);
+            display: flex;
+            align-items: center;
+            background: var(--container-bg); /* Menggunakan container bg untuk glassmorphism */
+            backdrop-filter: var(--glass-blur);
+        }
+        .theme-toggle:hover {
+            background: var(--accent-hover);
+            transform: scale(1.05);
+            box-shadow: 0 10px 20px rgba(0, 188, 212, 0.5); /* Glowing effect */
+        }
+        .theme-toggle::before {
+            content: var(--icon-theme);
+            margin-right: 8px;
+            font-size: 1.2em;
+            color: var(--accent-color);
+            transition: content 0.3s ease;
+        }
+
+        /* ==================================== */
+        /* 4. MAIN CONTAINER & GLASSMORPHISM */
+        /* ==================================== */
+        .container {
+            max-width: 1000px;
+            width: 100%;
+            background: var(--container-bg);
+            backdrop-filter: var(--glass-blur);
+            border: 1px solid rgba(255, 255, 255, 0.18); /* Border halus untuk efek kaca */
+            padding: 50px;
+            border-radius: 25px;
+            box-shadow: var(--shadow);
+            margin-bottom: 40px;
+            margin-top: 80px; 
+            transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.5s ease;
+            animation: fadeInUp 1s ease-out;
+        }
+        .container:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 25px 50px rgba(0,0,0,0.3);
+        }
+        
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(50px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ==================================== */
+        /* 5. IMAGE & TITLE */
+        /* ==================================== */
+        .header-images {
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            gap: 50px; 
+            margin-bottom: 30px; 
+            padding-top: 10px; 
+        }
+        
+        .profile-img {
+            width: 180px; 
+            height: 180px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 5px solid var(--accent-color);
+            transition: all 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
+            filter: drop-shadow(0 0 15px rgba(0, 188, 212, 0.3)); /* Drop shadow glow */
+        }
+        .profile-img:hover {
+            transform: scale(1.05) rotate(3deg);
+            box-shadow: 0 0 40px var(--accent-color);
+        }
+        
+        .university-logo {
+            width: 120px; /* Lebih kecil dari foto profil */
+            height: 120px;
+            border-radius: 15px !important; 
+            padding: 5px; 
+            background: rgba(255, 255, 255, 0.8); 
+            border: 3px solid var(--accent-color); 
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        body.dark-mode .university-logo {
+            background: rgba(44, 57, 75, 0.6);
+        }
+
+        h1 {
+            color: var(--text-color);
+            margin-bottom: 5px; 
+            font-size: 2.8em;
+            text-align: center;
+            font-weight: 700;
+        }
+        .h1-subtitle {
+            font-size: 1.6em; /* Sedikit lebih kecil */
+            margin-top: 0;
+            margin-bottom: 30px;
+            color: var(--accent-color); /* Berikan warna aksen */
+            font-weight: 600;
+        }
+        h2 {
+            color: var(--accent-color);
+            margin-top: 50px;
+            margin-bottom: 25px;
+            font-size: 2em;
+            text-align: center;
+            border-bottom: 3px solid var(--accent-hover); /* Border yang lebih tebal */
+            padding-bottom: 10px;
+            display: block; 
+            width: fit-content;
+            margin-left: auto;
+            margin-right: auto;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        /* ==================================== */
+        /* 6. PERSONAL INFO (CARD STYLES) */
+        /* ==================================== */
+        .personal-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); 
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        .personal-info p {
+            font-size: 1em; 
+            padding: 18px 25px; /* Padding yang lebih besar */
+            background: var(--container-bg); 
+            border-radius: 15px;
+            text-align: left;
+            border-left: 8px solid var(--accent-color); /* Garis aksen yang lebih tebal */
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1); 
+            transition: all 0.3s ease;
+            display: flex; 
+            align-items: center;
+            line-height: 1.4;
+            backdrop-filter: blur(10px); /* Glassmorphism di kartu */
+        }
+        .personal-info p:hover {
+            transform: translateY(-5px) scale(1.01); 
+            box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+            background: rgba(0, 188, 212, 0.1); /* Sedikit highlight dari warna aksen */
+        }
+        .personal-info p strong {
+            font-weight: 700; 
+            color: var(--text-color); /* Gunakan warna teks utama */
+            margin-right: 8px; 
+            flex-shrink: 0; 
+        }
+        .personal-info p span {
+            color: var(--accent-color); /* Nilai berwarna aksen */
+            font-weight: 400;
+        }
+        
+        .info-icon {
+            font-size: 1.8em; 
+            margin-right: 15px;
+            color: var(--accent-color);
+            line-height: 1;
+            flex-shrink: 0;
+        }
+
+        /* ==================================== */
+        /* 7. BIO */
+        /* ==================================== */
+        .bio {
+            font-style: italic;
+            color: var(--text-color);
+            text-align: center;
+            margin-bottom: 20px; 
+            font-size: 1.1em;
+            padding: 0 20px;
+        }
+        
+        /* ==================================== */
+        /* 8. SKILLS (PROGRESS BAR) */
+        /* ==================================== */
+        .skills {
+            margin-top: 40px;
+        }
+        .skill {
+            margin-bottom: 25px;
+        }
+        .skill p {
+            font-weight: 600;
+            margin-bottom: 8px;
+            display: flex;
+            justify-content: space-between;
+        }
+        .skill-bar {
+            background: var(--bg-secondary);
+            border-radius: 10px;
+            overflow: hidden;
+            height: 15px; /* Lebih tipis */
+            box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);
+        }
+        body.dark-mode .skill-bar {
+             background: #3a3a50;
+        }
+        .skill-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent-color), #00e5ff); /* Gradient pada fill */
+            width: 0;
+            transition: width 1.5s ease-out; 
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 188, 212, 0.5); /* Shadow pada fill bar */
+        }
+
+        /* ==================================== */
+        /* 9. SOCIAL LINKS */
+        /* ==================================== */
+        .social-links {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+        .social-links a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 15px 20px;
+            background: var(--accent-color); /* Warna tunggal untuk kesederhanaan */
+            color: white;
+            text-decoration: none;
+            border-radius: 10px; /* Sudut lebih bersiku */
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            text-align: center;
+        }
+        .social-links a:hover {
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 10px 20px rgba(0, 188, 212, 0.4);
+            background: var(--accent-hover);
+        }
+        /* Menggunakan Font Awesome (disarankan) atau Unicode (default) */
+        .social-links a i {
+            margin-right: 10px;
+            font-size: 1.4em;
+            color: white;
+        }
+
+        /* Jika menggunakan Unicode fallback (jika Font Awesome tidak dimuat) */
+        .instagram::before { content: ' '; }
+        .tiktok::before { content: ' '; }
+        .youtube::before { content: ' '; }
+        .whatsapp::before { content: ' '; }
+        .music::before { content: ' '; }
+
+        .social-links a[href*="instagram"] { background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888); }
+        .social-links a[href*="tiktok"] { background: #000; }
+        .social-links a[href*="youtube"] { background: #ff0000; }
+        .social-links a[href*="whatsapp"] { background: #25d366; }
+        .social-links a[href*="music"] { background: #00ffdd; }
+        /* ==================================== */
+        /* 10. PROJECT SLIDER */
+        /* ==================================== */
+        .slider {
+            position: relative;
+            overflow: hidden;
+            width: 100%;
+            margin-top: 20px;
+            border-radius: 15px; /* Sudut membulat pada slider */
+        }
+        .slides {
+            display: flex;
+            transition: transform 0.5s ease;
+        }
+        .slide {
+            min-width: 100%;
+            background: var(--container-bg);
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            flex-shrink: 0;
+            transition: background 0.5s ease;
+            backdrop-filter: blur(10px);
+            margin-right: 20px; /* Jarak antar slide */
+        }
+        .slide:last-child {
+            margin-right: 0;
+        }
+        body.dark-mode .slide {
+            background: var(--container-bg);
+        }
+        .slide img {
+            width: 90%;
+            max-width: 400px;
+            height: auto;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            border: 2px solid var(--accent-color);
+        }
+        .slider-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: var(--accent-color);
+            color: white;
+            border: none;
+            padding: 12px 18px;
+            border-radius: 50%;
+            cursor: pointer;
+            z-index: 10;
+            opacity: 0.9;
+            transition: all 0.3s ease;
+            font-size: 1.2em;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+        }
+        .prev { left: 10px; }
+        .next { right: 10px; }
+        .slider-btn:hover {
+            opacity: 1;
+            background: var(--accent-hover);
+            transform: translateY(-50%) scale(1.1);
+        }
+        
+        /* ==================================== */
+        /* 11. TESTIMONIALS */
+        /* ==================================== */
+        .testimonials {
+            margin-top: 40px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+        .testimonial {
+            background: var(--container-bg);
+            padding: 25px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: var(--shadow);
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .testimonial:hover {
+            transform: scale(1.02);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.25);
+        }
+        .testimonial img {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 15px;
+            border: 3px solid var(--accent-color);
+        }
+        .testimonial p {
+            margin: 10px 0;
+            line-height: 1.5;
+            font-style: italic;
+        }
+        .testimonial p strong {
+            display: block;
+            font-weight: 700;
+            color: var(--accent-hover);
+            margin-top: 10px;
+        }
+        .testimonial a {
+            color: var(--accent-color);
+            text-decoration: none;
+            font-weight: 600;
+            display: block;
+            margin-top: 10px;
+        }
+
+        /* ==================================== */
+        /* 12. CONTACT FORM */
+        /* ==================================== */
+        .contact-form {
+            margin-top: 30px;
+            display: grid;
+            gap: 15px;
+        }
+        .contact-form input, .contact-form textarea {
+            width: 100%;
+            padding: 15px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            font-size: 1em;
+            background: var(--container-bg);
+            transition: all 0.3s ease;
+            color: var(--text-color);
+            resize: vertical; /* Hanya bisa resize vertikal */
+        }
+        body.dark-mode .contact-form input, body.dark-mode .contact-form textarea {
+            background: rgba(44, 57, 75, 0.6);
+            border: 1px solid #555;
+            color: var(--text-color);
+        }
+        .contact-form input:focus, .contact-form textarea:focus {
+            border-color: var(--accent-color);
+            outline: 2px solid var(--accent-color);
+            box-shadow: 0 0 10px rgba(0, 188, 212, 0.3);
+        }
+        .contact-form button {
+            padding: 15px 30px;
+            background: var(--accent-color);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 1.1em;
+            font-weight: 700;
+            transition: background 0.3s ease, transform 0.3s ease;
+            align-self: center;
+        }
+        .contact-form button:hover {
+            background: var(--accent-hover);
+            transform: translateY(-2px);
+        }
+        
+        /* ==================================== */
+        /* 13. FOOTER */
+        /* ==================================== */
+        footer {
+            margin-top: 50px;
+            text-align: center;
+            color: var(--text-color);
+            font-size: 0.9em;
+            padding: 20px;
+            width: 100%;
+            opacity: 0.8;
+        }
+        footer a {
+            color: var(--accent-color);
+            text-decoration: none;
+            transition: color 0.3s ease;
+            font-weight: 600;
+        }
+        footer a:hover {
+            color: var(--accent-hover);
+        }
+        
+        /* ==================================== */
+        /* 14. RESPONSIVITAS */
+        /* ==================================== */
+        @media (max-width: 768px) {
+            .container { padding: 30px; margin-top: 70px; }
+            h1 { font-size: 2.2em; }
+            .h1-subtitle { font-size: 1.4em; }
+            h2 { font-size: 1.6em; }
+            
+            .header-images {
+                flex-direction: column;
+                gap: 20px;
+            }
+            .profile-img { width: 140px; height: 140px; }
+            .university-logo { width: 100px; height: 100px; }
+
+            .social-links, .testimonials {
+                grid-template-columns: 1fr;
+            }
+            .personal-info {
+                grid-template-columns: 1fr;
+            }
+        }
+
+/* ==================================== */
+/* 15. MINI GAME (SIMON SAYS) STYLES */
+/* ==================================== */
+#simon-game-area {
+    /* Gaya untuk area grid, sudah ada di inline HTML, tapi bisa ditambahkan */
+    pointer-events: none; /* Nonaktifkan klik awal */
+}
+.simon-pad {
+    width: 100px;
+    height: 100px;
+    border-radius: 10px;
+    cursor: pointer;
+    opacity: 0.6; /* Warna redup saat tidak aktif */
+    transition: opacity 0.1s, box-shadow 0.1s, transform 0.1s;
+    border: 2px solid var(--text-color);
+}
+.simon-pad:hover {
+    transform: scale(1.03);
+}
+
+/* Gaya saat tombol menyala */
+.simon-pad.active {
+    opacity: 1; 
+    box-shadow: 0 0 20px 5px rgba(255, 255, 255, 0.8);
+}
+
+/* Gaya tombol MULAI */
+#simon-start-button {
+    padding: 10px 20px;
+    background: var(--accent-color);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1em;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+#simon-start-button:hover {
+    background: var(--accent-hover);
+    transform: translateY(-2px);
+}
+
+/* ==================================== */
+/* 3.5. AUDIO CONTROL BUTTON */
+/* ==================================== */
+.audio-controls-container {
+    width: 100%;
+    max-width: 1000px; /* Sesuai dengan lebar container */
+    text-align: center;
+    margin-top: 80px; /* Dorong ke bawah sedikit agar di bawah header */
+    margin-bottom: -40px; /* Tarik ke atas agar dekat dengan container */
+    z-index: 5;
+    position: relative;
+}
+#play-pause-button {
+    background: var(--container-bg);
+    backdrop-filter: var(--glass-blur);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    color: var(--text-color);
+    padding: 12px 25px;
+    border-radius: 50px;
+    cursor: pointer;
+    font-size: 1em;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    box-shadow: var(--shadow);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 0 auto; /* Tengah */
+}
+#play-pause-button:hover {
+    background: var(--accent-hover);
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px rgba(0, 188, 212, 0.5);
+}
+#play-pause-button i {
+    font-size: 1.1em;
+}
+/* Style saat musik sedang diputar (misalnya, menjadi warna aksen) */
+#play-pause-button.playing {
+    background: var(--accent-color);
+    color: white;
+}
+    </style>
+</head>
+<body>
+    <canvas id="particles-canvas"></canvas>
+    
+    <header>
+        <button class="theme-toggle" onclick="toggleTheme()">Dark Mode</button>
+    </header>
+    
+    <audio id="my-audio" loop> 
+        <source src="audio1.mp3" type="audio/mpeg">
+        Browser Anda tidak mendukung elemen audio.
+    </audio>
+    <div class="audio-controls-container">
+        <button id="play-pause-button" onclick="togglePlayPause()">
+            <i class="fas fa-play"></i> BIRD OF FATHER
+        </button>
+    </div>
+    <hr/>
+
+
+    <div class="container">
+        <div class="header-images">
+            <img src="foto1.jpeg" alt="Foto Profil Bayu Dharma Prayoga" class="profile-img">
+          
+        </div>
+        
+        <h1>Bayu Dharma Prayoga</h1>
+        <h1 class="h1-subtitle">Teknik Informatika</h1>
+         
+
+        <h2>Data Diri</h2>
+        <div class="personal-info">
+            <p><span class="info-icon" style="content: var(--icon-name);"></span> <strong>Nama:</strong> <span>Bayu Dharma Prayoga</span></p>
+            <p><span class="info-icon" style="content: var(--icon-grad);"></span> <strong>Pendidikan:</strong> <span>Sarjana Teknik Informatika</span></p>
+            <p><span class="info-icon" style="content: var(--icon-uni);"></span> <strong>Perguruan Tinggi:</strong> <span>Universitas Islam Syekh-Yusuf</span></p>
+            <p><span class="info-icon" style="content: var(--icon-age);"></span> <strong>Umur:</strong> <span>23 tahun</span></p>
+            <p><span class="info-icon" style="content: var(--icon-gender);"></span> <strong>Jenis Kelamin:</strong> <span>Laki-Laki</span></p>
+            <p><span class="info-icon" style="content: var(--icon-hobby);"></span> <strong>Hobby:</strong> <span>Bulutangkis</span></p>
+        </div>
+        
+        <div class="bio">
+            <p>Halo! Saya adalah Lulusan Teknik Informatika dengan pemahaman kuat tentang pemrograman dan pengembangan aplikasi dan web. Siap mengaplikasikan pengetahuan teknis dalam lingkungan profesional, dengan kemampuan analitis dan problem-solving yang terasah selama perkuliahan.</p>
+        </div>
+        <div class="bio">
+            <p>Saya memiliki pengalaman dalam proyek Sensor dan Actuator / Robotic, contoh: merancang sistem sensor dan robotic dalam merancang alat otomatisasi dalam pekerjaan dan terbiasa bekerja secara efisien dalam tim untuk memecahkan masalah teknis secara kreatif.</p>
+        </div>
+        <div class="bio">
+            <p>Saya suka membuat proyek kreatif dan berbagi konten di media sosial.</p>
+        </div>
+        
+        <hr/>
+
+        <h2>Keterampilan Saya</h2>
+        <div class="skills">
+            <div class="skill">
+                <p>HTML & CSS</p>
+                <div class="skill-bar"><div class="skill-fill" style="--fill-width: 95%;"></div></div>
+            </div>
+            <div class="skill">
+                <p>JavaScript</p>
+                <div class="skill-bar"><div class="skill-fill" style="--fill-width: 80%;"></div></div>
+            </div>
+            <div class="skill">
+                <p>Python</p>
+                <div class="skill-bar"><div class="skill-fill" style="--fill-width: 75%;"></div></div>
+            </div>
+        </div>
+        
+        <hr/>
+
+        <h2>Tautan Sosial Media</h2>
+        <div class="social-links">
+            <a href="https://www.instagram.com/byudhrmapryga" target="_blank" class="instagram"><i class="fab fa-instagram"></i> Instagram</a>
+            <a href="https://www.tiktok.com/@xxxyourboyzzz" target="_blank" class="tiktok"><i class="fab fa-tiktok"></i> TikTok</a>
+            <a href="https://youtube.com/@bayudharmaprayoga3436?si=czG1vmZXKMCTVlpw" target="_blank" class="youtube"><i class="fab fa-youtube"></i> YouTube</a>
+            <a href="https://wa.me/6287861755138" target="_blank" class="whatsapp"><i class="fab fa-whatsapp"></i> WhatsApp</a>
+        </div>
+        
+        <hr/>
+
+        <h2>Proyek Saya</h2>
+        <div class="slider">
+            <button class="slider-btn prev" onclick="changeSlide(-1)">&#10094;</button>
+            <div class="slides" id="slides">
+                <div class="slide">
+
+                    <img src="blynk1.png" alt="Proyek Internet Of Things">
+                    <h3>Internet Of Things "Iot"</h3>
+                    <p>Kontrol perangkat pemantauan kualitas udara melalui Blynk Cloud</p>
+                    <a href="https://blynk.cloud/dashboard/617474/global/devices/1/organization/617474/devices/2677754/dashboard" target="_blank">Lihat Detail</a>
+                </div>
+                <div class="slide">
+                    <img src="tiktokaf.png" alt="Tiktok Bisnis">
+                    <h3>Business Affiliate</h3>
+                    <p>Pengembangan Bisnis Tiktok Affiliate</p>
+                    <a href="https://www.tiktok.com/@xxxyourboyzzz" target="_blank">Lihat Detail</a>
+                </div>
+                <div class="slide" id="game-slide">
+                    <h3>Mini Game: Ulangi Urutan Warna (Simon Says)</h3>
+                    <p>Ulangi urutan warna yang muncul! Uji daya ingat Anda.</p>
+                    <div id="simon-game-area" style="margin: 20px 0; display: grid; grid-template-columns: 100px 100px; gap: 10px; justify-content: center;">
+                        <div class="simon-pad" id="simon-0" data-index="0" style="background: #E53935;" onclick="handleUserClick(0)"></div> <div class="simon-pad" id="simon-1" data-index="1" style="background: #43A047;" onclick="handleUserClick(1)"></div> <div class="simon-pad" id="simon-2" data-index="2" style="background: #1E88E5;" onclick="handleUserClick(2)"></div> <div class="simon-pad" id="simon-3" data-index="3" style="background: #FFEB3B;" onclick="handleUserClick(3)"></div> </div>
+                    <p id="simon-message" style="font-weight: 600; min-height: 20px; margin-top: 10px;">Tekan MULAI untuk bermain!</p>
+                    <p id="simon-score">Skor: 0</p>
+                    <button id="simon-start-button" onclick="simonStartGame()" style="margin-top: 10px;">MULAI</button>
+                </div>
+            </div>
+            <button class="slider-btn next" onclick="changeSlide(1)">&#10095;</button>
+        </div>
+        
+        <hr/>
+
+        <h2>Ulasan Penguji</h2>
+        <div class="testimonials">
+            <div class="testimonial">
+                <img src="mahmudin.png" alt="Foto Mahmudin, S.Kom, M.Kom.">
+                <p><strong>Dosen Pembimbing</strong></p>
+                <p>"Bayu memiliki pemahaman yang kuat tentang HTML dan CSS. Proyeknya sangat rapi!"</p>
+                <p><strong>- Mahmudin, S.Kom, M.Kom.</strong></p>
+                <a href="https://ft.unis.ac.id/node/179" target="_blank">Lihat Detail</a>
+            </div>
+            <div class="testimonial">
+                <img src="doni.png" alt="Foto Doni Prasetyo, S.Kom, M.Kom.">
+                <p><strong>Dosen Penguji</strong></p>
+                <p>"Bayu sangat ahli dalam pemahaman sistem pemograman. Keterampilan JavaScript-nya mengesankan."</p>
+                <p>"Dedikasinya terhadap proyek-proyeknya patut diacungi jempol."</p>
+                <p><strong>- Doni Prasetyo, S.Kom, M.Kom.</strong></p>
+                <a href="https://ft.unis.ac.id/node/179" target="_blank">Lihat Detail</a>
+            </div>
+        </div>
+        
+        <hr/>
+
+        <h2>Hubungi Saya</h2>
+        <form class="contact-form" onsubmit="alert('Pesan Terkirim!'); return false;">
+            <input type="text" placeholder="Nama Anda" required>
+            <input type="email" placeholder="Email Anda" required>
+            <textarea rows="6" placeholder="Pesan Anda" required></textarea>
+            <button type="submit">Kirim Pesan</button>
+        </form>
+    </div>
+    
+    <footer>
+        <p>&copy; 2025 Bayu Dharma Prayoga. Dibangun dengan sinergi dan kreativitas **Teknik Informatika**.</p>
+        <p>Lihat kode sumber di <a href="#" target="_blank">GitHub</a></p>
+    </footer>
+    
+    <script>
+
+        // 1. Dark Mode Toggle
+        function toggleTheme() {
+            const body = document.body;
+            body.classList.toggle('dark-mode');
+            
+            const isDarkMode = body.classList.contains('dark-mode');
+            localStorage.setItem('theme', isDarkMode ? 'dark' : 'light');
+            
+            const button = document.querySelector('.theme-toggle');
+            button.innerHTML = isDarkMode ? 'Light Mode' : 'Dark Mode';
+            
+            // Perbarui warna partikel saat mode berubah
+            initParticles();
+        }
+
+        // Memuat preferensi tema saat halaman dimuat
+        document.addEventListener('DOMContentLoaded', () => {
+            const savedTheme = localStorage.getItem('theme');
+            const button = document.querySelector('.theme-toggle');
+
+            if (savedTheme === 'dark') {
+                document.body.classList.add('dark-mode');
+                button.innerHTML = 'Light Mode';
+            } else {
+                button.innerHTML = 'Dark Mode';
+            }
+        });
+
+
+        // 2. Slider Proyek Sederhana
+        let currentSlide = 0;
+        const slidesContainer = document.getElementById('slides');
+        const slides = document.querySelectorAll('.slide');
+        const totalSlides = slides.length;
+
+        function updateSlide() {
+            slidesContainer.style.transform = `translateX(-${currentSlide * 100}%)`;
+        }
+
+        function changeSlide(direction) {
+            currentSlide = (currentSlide + direction) % totalSlides;
+            if (currentSlide < 0) {
+                currentSlide = totalSlides - 1;
+            }
+            updateSlide();
+        }
+
+
+        // 3. Partikel Latar Belakang (Efek Animasi)
+        const canvas = document.getElementById('particles-canvas');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+        let maxParticles = 50;
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+
+        class Particle {
+            constructor(x, y, radius, color, velocity) {
+                this.x = x;
+                this.y = y;
+                this.radius = radius;
+                this.color = color;
+                this.velocity = velocity;
+            }
+
+            draw() {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false);
+                ctx.fillStyle = this.color;
+                ctx.fill();
+                ctx.closePath();
+            }
+
+            update() {
+                this.draw();
+                
+                this.x += this.velocity.x;
+                this.y += this.velocity.y;
+                
+                if (this.x + this.radius > canvas.width || this.x - this.radius < 0) {
+                    this.velocity.x = -this.velocity.x;
+                }
+                if (this.y + this.radius > canvas.height || this.y - this.radius < 0) {
+                    this.velocity.y = -this.velocity.y;
+                }
+            }
+        }
+
+        function initParticles() {
+            particles = [];
+            let particleColor = document.body.classList.contains('dark-mode') ? 'rgba(0, 229, 255, 0.5)' : 'rgba(0, 188, 212, 0.5)';
+
+            for (let i = 0; i < maxParticles; i++) {
+                const radius = Math.random() * 2 + 1;
+                const x = Math.random() * (canvas.width - radius * 2) + radius;
+                const y = Math.random() * (canvas.height - radius * 2) + radius;
+                
+                const velocity = {
+                    x: (Math.random() - 0.5) * 0.5,
+                    y: (Math.random() - 0.5) * 0.5
+                };
+                particles.push(new Particle(x, y, radius, particleColor, velocity));
+            }
+        }
+
+        function animateParticles() {
+            requestAnimationFrame(animateParticles);
+            
+            // Efek jejak: hapus kanvas dengan opasitas rendah
+            let clearColor = document.body.classList.contains('dark-mode') ? 'rgba(26, 26, 46, 0.1)' : 'rgba(224, 247, 250, 0.1)';
+            ctx.fillStyle = clearColor;
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            // Perbarui warna partikel saat mode berubah
+            let particleColor = document.body.classList.contains('dark-mode') ? 'rgba(0, 229, 255, 0.5)' : 'rgba(0, 188, 212, 0.5)';
+            particles.forEach(particle => {
+                particle.color = particleColor;
+                particle.update();
+            });
+        }
+
+        // Setup awal
+        window.addEventListener('resize', () => {
+            resizeCanvas();
+            initParticles();
+        });
+
+        // Memanggil fungsi untuk setup awal
+        resizeCanvas();
+        initParticles();
+        animateParticles();
+
+        // 4. Animasi Skill Bar setelah load
+        document.addEventListener('DOMContentLoaded', () => {
+            const skills = document.querySelectorAll('.skill-fill');
+            skills.forEach(skill => {
+                const width = skill.style.getPropertyValue('--fill-width');
+                // Timeout kecil agar transisi terlihat
+                setTimeout(() => {
+                    skill.style.width = width;
+                }, 100); 
+            });
+        });
+
+        // ... (Kode untuk changeSlide, Particles, dan Skill Bar tetap di sini) ...
+
+// 5. MINI GAME: Tebak Warna Sederhana
+const simonPads = document.querySelectorAll('.simon-pad');
+const simonMessage = document.getElementById('simon-message');
+const simonScore = document.getElementById('simon-score');
+const simonStartBtn = document.getElementById('simon-start-button');
+const simonGameArea = document.getElementById('simon-game-area');
+
+let simonSequence = [];
+let playerSequence = [];
+let level = 0;
+let isPlaying = false;
+
+// Fungsi untuk menyalakan tombol
+function flashPad(index) {
+    const pad = simonPads[index];
+    pad.classList.add('active');
+    setTimeout(() => {
+        pad.classList.remove('active');
+    }, 300);
+}
+
+// Menampilkan urutan ke pemain
+function playSequence() {
+    isPlaying = true;
+    simonMessage.textContent = "ULANGI URUTAN INI!";
+    simonGameArea.style.pointerEvents = 'none'; // Nonaktifkan klik saat game bermain
+    let i = 0;
+    const interval = setInterval(() => {
+        flashPad(simonSequence[i]);
+        i++;
+        if (i >= simonSequence.length) {
+            clearInterval(interval);
+            isPlaying = false;
+            simonMessage.textContent = "Sekarang giliran Anda.";
+            simonGameArea.style.pointerEvents = 'auto'; // Aktifkan klik pengguna
+        }
+    }, 600);
+}
+
+// Menambah langkah baru ke urutan
+function nextLevel() {
+    level++;
+    simonScore.textContent = `Skor: ${level - 1}`;
+    playerSequence = [];
+    
+    // Tambahkan langkah acak baru (0, 1, 2, atau 3)
+    const randomPad = Math.floor(Math.random() * 4);
+    simonSequence.push(randomPad);
+    
+    setTimeout(playSequence, 1000); // Tunda sebentar sebelum menampilkan
+}
+
+// Memproses klik pengguna
+function handleUserClick(index) {
+    if (isPlaying) return; // Jangan izinkan klik saat urutan sedang diputar
+
+    flashPad(index); // Beri umpan balik visual
+    playerSequence.push(index);
+
+    const step = playerSequence.length - 1;
+
+    if (playerSequence[step] === simonSequence[step]) {
+        // Klik benar
+        if (playerSequence.length === simonSequence.length) {
+            // Urutan Selesai dan Benar! Pindah ke level berikutnya
+            simonMessage.textContent = "BENAR! Siap untuk Level " + level + "?";
+            simonGameArea.style.pointerEvents = 'none'; 
+            setTimeout(nextLevel, 1500);
+        }
+    } else {
+        // Klik salah
+        simonMessage.textContent = `GAME OVER! Anda mencapai Level ${level - 1}.`;
+        simonGameArea.style.pointerEvents = 'none'; 
+        simonStartBtn.disabled = false;
+        simonStartBtn.textContent = "COBA LAGI";
+        isPlaying = false;
+    }
+}
+
+// Memulai atau mengatur ulang game
+function simonStartGame() {
+    level = 0;
+    simonSequence = [];
+    playerSequence = [];
+    simonStartBtn.disabled = true;
+    simonStartBtn.textContent = "MEMULAI...";
+    simonScore.textContent = "Skor: 0";
+    nextLevel();
+}
+
+// Membuat fungsi game dapat diakses secara global
+window.handleUserClick = handleUserClick;
+window.simonStartGame = simonStartGame;
+
+// Panggil simonStartGame saat slider digeser ke slide ini (opsional: atau biarkan pengguna klik Mulai)
+// Untuk kemudahan, kita biarkan tombol Mulai di HTML yang memicu game.
+
+// ... (Kode untuk Dark Mode, Slider, dan Particles di sini) ...
+
+// ** FUNGSI KONTROL AUDIO BARU **
+const audio = document.getElementById('my-audio');
+const playPauseButton = document.getElementById('play-pause-button');
+
+function togglePlayPause() {
+    if (audio.paused) {
+        audio.play().catch(error => {
+            console.log("Autoplay failed. The user must interact first.", error);
+            playPauseButton.innerHTML = '<i class="fas fa-exclamation-triangle"></i> Autoplay Dibatasi';
+            // Coba lagi setelah interaksi user
+        });
+        updateButton(true);
+    } else {
+        audio.pause();
+        updateButton(false);
+    }
+}
+
+function updateButton(isPlaying) {
+    if (isPlaying) {
+        playPauseButton.innerHTML = '<i class="fas fa-pause"></i> Jeda Musik Latar';
+        playPauseButton.classList.add('playing');
+    } else {
+        playPauseButton.innerHTML = '<i class="fas fa-play"></i> Putar Musik Latar';
+        playPauseButton.classList.remove('playing');
+    }
+}
+
+// Catatan: Autoplay sering diblokir oleh browser. Pengguna mungkin harus berinteraksi 
+// (seperti mengklik tombol Dark Mode atau tombol ini) agar musik mulai.
+// ** AKHIR FUNGSI KONTROL AUDIO BARU **
+
+// ... (Kode untuk Skill Bar dan game lainnya di sini) ...
+
+// Membuat fungsi togglePlayPause tersedia secara global untuk onclick di HTML
+window.togglePlayPause = togglePlayPause;
+    </script>
+</body>
+</html>
